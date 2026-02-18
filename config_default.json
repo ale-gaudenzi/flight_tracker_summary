@@ -1,0 +1,22 @@
+{
+    "system": {
+        "json_path": "/run/dump1090-mutability/aircraft.json",
+        "check_interval_seconds": 10,
+        "report_time": "23:59"
+    },
+    "email": {
+        "enabled": true,
+        "smtp_server": "",
+        "smtp_port": 587,
+        "sender_email": "",
+        "sender_password": "",
+        "receiver_email": ""
+    },
+    "twitter": {
+        "enabled": false,
+        "api_key": "YOUR_API_KEY",
+        "api_secret": "YOUR_API_SECRET",
+        "access_token": "YOUR_ACCESS_TOKEN",
+        "access_token_secret": "YOUR_ACCESS_TOKEN_SECRET"
+    }
+}
