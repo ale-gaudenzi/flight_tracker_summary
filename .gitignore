@@ -1,1 +1,4 @@
 config.json
+venv/
+flights_test.json
+__pycache__/

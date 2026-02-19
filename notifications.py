@@ -1,6 +1,6 @@
 import smtplib
 import tweepy
-import datetime
+from datetime import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
@@ -12,7 +12,7 @@ def send_email(settings, subject, body):
     msg['From'] = settings['sender_email']
     msg['To'] = settings['receiver_email']
     msg['Subject'] = subject
-    msg.attach(MIMEText(body, 'plain'))
+    msg.attach(MIMEText(body, 'html'))
     try:
         server = smtplib.SMTP(settings['smtp_server'], settings['smtp_port'])
         server.starttls()
@@ -62,18 +62,16 @@ def daily_report(config_email, config_twitter, daily_log):
         <p><b>📊 Overview</b><br>
         Total Unique Aircraft Seen: {total_count} 📡</p>
         
-        <p style="background-color: #f1f1f1; padding: 10px; border-left: 5px solid #3498db;">
-            <b>📉 Lowest Flight of the Day</b><br>
-            Flight: {lowest['flight']}<br>
-            Minimum Altitude: {lowest['min_alt']} ft ({low_meters} m)<br>
-            Time First Seen: {lowest['first_seen']}
-        </p>
-        
-        <p style="background-color: #f1f1f1; padding: 10px; border-left: 5px solid #e67e22;">
-            <b>🚀 Fastest Flight of the Day</b><br>
-            Flight: {fastest['flight']}<br>
-            Max Speed: {fastest['max_speed']} kts ({fast_kmh} km/h)
-        </p>
+        <p><b>📉 Lowest Flight of the Day</b><br>
+        Flight Code: {lowest['flight']}<br>
+        Minimum Altitude: {lowest['min_alt']} ft ({low_meters} m)<br>
+        Time First Seen: {lowest['first_seen']}</p>
+    
+        <p><b>🚀 Fastest Flight of the Day</b><br>
+        Flight Code: {fastest['flight']}<br>
+        Max Speed: {fastest['max_speed']} kts ({fast_kmh} km/h)</p>
+        Time First Seen: {fastest['first_seen']}</p>
+
     </body>
     </html>
     """
@@ -86,4 +84,4 @@ def daily_report(config_email, config_twitter, daily_log):
     )
 
     send_email(config_email, subject, email_body)
-    send_tweet(config_twitter, twitter_body)
+    #send_tweet(config_twitter, twitter_body)
