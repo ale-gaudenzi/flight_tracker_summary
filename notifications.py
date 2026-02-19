@@ -1,18 +1,18 @@
 import smtplib
 import tweepy
+import datetime
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
 
 def send_email(settings, subject, body):
     if not settings.get('enabled', True):
         return
-
     msg = MIMEMultipart()
     msg['From'] = settings['sender_email']
     msg['To'] = settings['receiver_email']
     msg['Subject'] = subject
     msg.attach(MIMEText(body, 'plain'))
-
     try:
         server = smtplib.SMTP(settings['smtp_server'], settings['smtp_port'])
         server.starttls()
@@ -28,7 +28,6 @@ def send_email(settings, subject, body):
 def send_tweet(settings, body):
     if not settings.get('enabled', False):
         return
-
     try:
         client = tweepy.Client(
             consumer_key=settings['api_key'],
@@ -40,3 +39,51 @@ def send_tweet(settings, body):
         print(f"✅ Tweet sent successfully! ID: {response.data['id']}")
     except Exception as e:
         print(f"❌ Error sending tweet: {e}")
+
+
+def daily_report(config_email, config_twitter, daily_log):
+    valid_entries = [v for v in daily_log.values() if isinstance(v, dict)]
+    if not valid_entries:
+        return
+
+    total_count = len(valid_entries)
+    lowest = min(valid_entries, key=lambda x: x['min_alt'])
+    fastest = max(valid_entries, key=lambda x: x['max_speed'])
+    
+    low_meters = int(lowest['min_alt'] * 0.3048)
+    fast_kmh = int(fastest['max_speed'] * 1.852)
+
+    subject = f"✈️ Daily Flight Report - {datetime.now().strftime('%Y-%m-%d')}"
+    
+    email_body = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif;">
+        <h2 style="color: #2c3e50;">📅 Daily ADS-B Summary</h2>
+        <p><b>📊 Overview</b><br>
+        Total Unique Aircraft Seen: {total_count} 📡</p>
+        
+        <p style="background-color: #f1f1f1; padding: 10px; border-left: 5px solid #3498db;">
+            <b>📉 Lowest Flight of the Day</b><br>
+            Flight: {lowest['flight']}<br>
+            Minimum Altitude: {lowest['min_alt']} ft ({low_meters} m)<br>
+            Time First Seen: {lowest['first_seen']}
+        </p>
+        
+        <p style="background-color: #f1f1f1; padding: 10px; border-left: 5px solid #e67e22;">
+            <b>🚀 Fastest Flight of the Day</b><br>
+            Flight: {fastest['flight']}<br>
+            Max Speed: {fastest['max_speed']} kts ({fast_kmh} km/h)
+        </p>
+    </body>
+    </html>
+    """
+
+    twitter_body = (
+        f"📅 Daily ADS-B Summary\n"
+        f"Total Aircraft: {total_count} 📡\n\n"
+        f"📉 Lowest: {lowest['flight']} at {lowest['min_alt']}ft\n"
+        f"🚀 Fastest: {fastest['flight']} at {fastest['max_speed']}kts"
+    )
+
+    send_email(config_email, subject, email_body)
+    send_tweet(config_twitter, twitter_body)
