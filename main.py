@@ -37,15 +37,16 @@ def update_tracker():
     for plane in data['aircraft']:
         if 'hex' not in plane:
             continue
-            
         hex_code = plane['hex']
-        flight = plane.get('flight', 'Unknown').strip()
-        alt = plane.get('alt_baro', 0)
-        speed = plane.get('gs', 0) 
 
-        if not isinstance(alt, (int, float)) or alt <= 0:
+        flight = plane.get('flight', 'Unknown').strip()
+
+        alt = plane.get('altitude') or plane.get('alt_baro')
+        if alt is None or not isinstance(alt, (int, float)) or alt <= 0:
             continue
-        if not isinstance(speed, (int, float)):
+
+        speed = plane.get('speed') or plane.get('gs')
+        if speed is None or not isinstance(speed, (int, float)):
             speed = 0
 
         if hex_code not in daily_log:
@@ -92,7 +93,7 @@ def process_daily_report():
     """
 
     notifications.send_email(config['email'], subject, body)
-    notifications.send_tweet(config['twitter'], body)
+    #notifications.send_tweet(config['twitter'], body)
 
     daily_log.clear()
 

@@ -1,0 +1,11 @@
+{ "now" : 1771519217.2,
+  "messages" : 219639,
+  "aircraft" : [
+    {"hex":"4d20c0","squawk":"0464","lat":45.782217,"lon":10.236305,"nucp":7,"seen_pos":0.7,"altitude":20400,"vert_rate":2304,"track":59,"speed":361,"mlat":[],"tisb":[],"messages":46,"seen":0.3,"rssi":-28.5},
+    {"hex":"3c6748","squawk":"1000","flight":"DLH336  ","lat":46.269791,"lon":10.303099,"nucp":7,"seen_pos":0.4,"altitude":37025,"vert_rate":-128,"track":143,"speed":470,"mlat":[],"tisb":[],"messages":457,"seen":0.0,"rssi":-26.5},
+    {"hex":"440608","squawk":"1000","flight":"AUA526  ","lat":45.916672,"lon":10.559402,"nucp":7,"seen_pos":0.8,"altitude":27825,"vert_rate":1472,"track":67,"speed":412,"category":"A3","mlat":[],"tisb":[],"messages":666,"seen":0.0,"rssi":-25.9},
+    {"hex":"502d10","mlat":[],"tisb":[],"messages":964,"seen":87.9,"rssi":-29.1},
+    {"hex":"39cea6","squawk":"1000","lat":46.140060,"lon":10.673151,"nucp":7,"seen_pos":56.6,"altitude":38000,"mlat":[],"tisb":[],"messages":2250,"seen":28.4,"rssi":-32.8},
+    {"hex":"49530b","mlat":[],"tisb":[],"messages":1955,"seen":152.7,"rssi":-32.0}
+  ]
+}
